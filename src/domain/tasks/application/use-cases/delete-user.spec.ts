@@ -6,20 +6,23 @@ import { UniqueEntityId } from "@/core/entity/unique-entity-id";
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let sut: DeleteUserUseCase;
 
-describe("Create User", () => {
+describe("Delete User", () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
     sut = new DeleteUserUseCase(inMemoryUsersRepository);
   });
 
   it("should be able to delete a user", async () => {
-    makeUser({}, new UniqueEntityId("user-01"));
+    const user = makeUser({}, new UniqueEntityId("user-01"));
 
-    await inMemoryUsersRepository.delete("user-01");
+    await inMemoryUsersRepository.create(user);
 
-    const databaseUser = await inMemoryUsersRepository.findById("user-01");
+    expect(inMemoryUsersRepository.items).toHaveLength(1);
+
+    await sut.execute({
+      userId: "user-01",
+    });
 
     expect(inMemoryUsersRepository.items).toHaveLength(0);
-    expect(databaseUser).toBeNull();
   });
 });
