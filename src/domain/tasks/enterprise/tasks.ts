@@ -1,10 +1,10 @@
-import { Entity } from "src/core/entity";
-import { UniqueEntityId } from "src/core/unique-entity-id";
+import { Entity } from "@/core/entity/entity";
+import { UniqueEntityId } from "@/core/entity/unique-entity-id";
 
 export interface TaskProps {
   title: string;
   description: string;
-  isCompleted?: boolean;
+  isCompleted: boolean;
   createdAt: Date;
   updatedAt?: Date | null;
 }
@@ -50,7 +50,13 @@ export class Task extends Entity<TaskProps> {
   }
 
   static create(props: TaskProps, id?: UniqueEntityId) {
-    const task = new Task(props, id);
+    const task = new Task(
+      {
+        ...props,
+        isCompleted: props.isCompleted ?? false,
+      },
+      id
+    );
 
     return task;
   }
