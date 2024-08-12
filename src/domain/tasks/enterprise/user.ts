@@ -9,7 +9,7 @@ export interface UserProps {
 
 export class User extends Entity<UserProps> {
   get name() {
-    return this.name;
+    return this.props.name;
   }
 
   set name(name: string) {
@@ -17,11 +17,11 @@ export class User extends Entity<UserProps> {
   }
 
   get email() {
-    return this.email;
+    return this.props.email;
   }
 
   get password() {
-    return this.password;
+    return this.props.password;
   }
 
   static create(props: UserProps, id?: UniqueEntityId) {
