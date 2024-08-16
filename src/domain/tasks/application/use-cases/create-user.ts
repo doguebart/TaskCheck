@@ -2,6 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { UsersRepository } from "../repository/users-repository";
 import { hash } from "bcryptjs";
 import { User } from "../../enterprise/user";
+import { UserAlreadyExistsError } from "@/core/errors/user-already-exists-error";
+import { Either, left, right } from "@/core/either";
 
 export interface CreateUserRequest {
   name: string;
@@ -9,15 +11,21 @@ export interface CreateUserRequest {
   password: string;
 }
 
+type CreateUserUseCaseResponse = Either<UserAlreadyExistsError, {}>;
+
 @Injectable()
 export class CreateUserUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
-  async execute({ name, email, password }: CreateUserRequest): Promise<void> {
+  async execute({
+    name,
+    email,
+    password,
+  }: CreateUserRequest): Promise<CreateUserUseCaseResponse> {
     const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithSameEmail) {
-      throw new Error("E-mail is already in use.");
+      return left(new UserAlreadyExistsError());
     }
 
     const password_hash = await hash(password, 8);
@@ -29,5 +37,7 @@ export class CreateUserUseCase {
     });
 
     await this.usersRepository.create(user);
+
+    return right({});
   }
 }
