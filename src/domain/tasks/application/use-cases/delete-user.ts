@@ -2,12 +2,13 @@ import { Injectable } from "@nestjs/common";
 import { UsersRepository } from "../repository/users-repository";
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { Either, left, right } from "@/core/either";
+import { User } from "../../enterprise/user";
 
 export interface DeleteUserRequest {
   userId: string;
 }
 
-type DeleteUserUseCaseResponse = Either<ResourceNotFoundError, {}>;
+type DeleteUserUseCaseResponse = Either<ResourceNotFoundError, { user: User }>;
 
 @Injectable()
 export class DeleteUserUseCase {
@@ -24,6 +25,8 @@ export class DeleteUserUseCase {
 
     await this.usersRepository.delete(userId);
 
-    return right({});
+    return right({
+      user,
+    });
   }
 }

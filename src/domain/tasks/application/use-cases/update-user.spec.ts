@@ -30,7 +30,9 @@ describe("Update User", () => {
     });
 
     expect(result.isRight()).toBe(true);
-    expect(inMemoryUsersRepository.items[0].name).toEqual("Douglas UPDATED");
+    expect(result.value).toEqual({
+      user: expect.objectContaining({ name: "Douglas UPDATED" }),
+    });
   });
 
   it("should not be able to update a non existing user", async () => {

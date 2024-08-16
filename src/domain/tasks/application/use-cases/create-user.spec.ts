@@ -2,7 +2,6 @@ import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repos
 import { CreateUserUseCase } from "./create-user";
 import { compare } from "bcryptjs";
 import { makeUser } from "test/factories/make-user-factory";
-import { UserAlreadyExistsError } from "@/core/errors/user-already-exists-error";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let sut: CreateUserUseCase;
@@ -22,11 +21,11 @@ describe("Create User", () => {
 
     expect(result.isRight()).toBe(true);
     expect(inMemoryUsersRepository.items).toHaveLength(1);
-    expect(inMemoryUsersRepository.items[0]).toEqual(
-      expect.objectContaining({
+    expect(result.value).toEqual({
+      user: expect.objectContaining({
         name: "Douglas Welber",
-      })
-    );
+      }),
+    });
   });
 
   it("should hash user password", async () => {

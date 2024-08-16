@@ -1,12 +1,13 @@
 import { Entity } from "@/core/entity/entity";
 import { UniqueEntityId } from "@/core/entity/unique-entity-id";
+import { Optional } from "@/core/types/optional";
 
 export interface TaskProps {
+  userId: UniqueEntityId;
   title: string;
   description: string;
-  isCompleted: boolean;
   createdAt: Date;
-  updatedAt?: Date | null;
+  completedAt?: Date | null;
 }
 
 export class Task extends Entity<TaskProps> {
@@ -16,7 +17,6 @@ export class Task extends Entity<TaskProps> {
 
   set title(title: string) {
     this.props.title = title;
-    this.touch();
   }
 
   get description() {
@@ -25,35 +25,25 @@ export class Task extends Entity<TaskProps> {
 
   set description(description: string) {
     this.props.description = description;
-    this.touch();
   }
 
-  get isCompleted() {
-    return this.props.isCompleted;
-  }
-
-  set isCompleted(isCompleted: boolean) {
-    this.props.isCompleted = isCompleted;
-    this.touch();
+  get completedAt() {
+    return this.props.completedAt;
   }
 
   get createdAt() {
     return this.props.createdAt;
   }
 
-  get updatedAt() {
-    return this.props.updatedAt;
-  }
-
-  private touch() {
-    this.props.updatedAt = new Date();
-  }
-
-  static create(props: TaskProps, id?: UniqueEntityId) {
+  static create(
+    props: Optional<TaskProps, "createdAt" | "completedAt">,
+    id?: UniqueEntityId
+  ) {
     const task = new Task(
       {
         ...props,
-        isCompleted: props.isCompleted ?? false,
+        completedAt: props.completedAt ?? new Date(),
+        createdAt: props.createdAt ?? new Date(),
       },
       id
     );
