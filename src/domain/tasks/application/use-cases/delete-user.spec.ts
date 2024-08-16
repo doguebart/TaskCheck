@@ -19,10 +19,11 @@ describe("Delete User", () => {
 
     expect(inMemoryUsersRepository.items).toHaveLength(1);
 
-    await sut.execute({
+    const result = await sut.execute({
       userId: "user-01",
     });
 
+    expect(result.isRight()).toBe(true);
     expect(inMemoryUsersRepository.items).toHaveLength(0);
   });
 });
