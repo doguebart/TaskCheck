@@ -4,6 +4,12 @@ import { Task } from "@/domain/tasks/enterprise/tasks";
 export class InMemoryTasksRepository implements TasksRepository {
   public items: Task[] = [];
 
+  async save(task: Task) {
+    const itemIndex = this.items.findIndex((item) => item.id === task.id);
+
+    this.items[itemIndex] = task;
+  }
+
   async delete(task: Task) {
     const itemIndex = this.items.findIndex((item) => item.id === task.id);
 
