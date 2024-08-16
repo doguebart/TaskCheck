@@ -35,6 +35,10 @@ export class Task extends Entity<TaskProps> {
     return this.props.completedAt;
   }
 
+  set completedAt(completedAt: Date | null | undefined) {
+    this.props.completedAt = completedAt;
+  }
+
   get createdAt() {
     return this.props.createdAt;
   }
@@ -46,7 +50,7 @@ export class Task extends Entity<TaskProps> {
     const task = new Task(
       {
         ...props,
-        completedAt: props.completedAt ?? new Date(),
+        completedAt: props.completedAt ?? null,
         createdAt: props.createdAt ?? new Date(),
       },
       id
