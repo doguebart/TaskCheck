@@ -4,12 +4,12 @@ import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { Either, left, right } from "@/core/either";
 import { User } from "../../enterprise/user";
 
-export interface UpdateUserRequest {
+export interface UpdateUserUseCaseRequest {
   name: string;
   userId: string;
 }
 
-type UpdateUserResponse = Either<ResourceNotFoundError, { user: User }>;
+type UpdateUserUseCaseResponse = Either<ResourceNotFoundError, { user: User }>;
 
 @Injectable()
 export class UpdateUserUseCase {
@@ -18,7 +18,7 @@ export class UpdateUserUseCase {
   async execute({
     name,
     userId,
-  }: UpdateUserRequest): Promise<UpdateUserResponse> {
+  }: UpdateUserUseCaseRequest): Promise<UpdateUserUseCaseResponse> {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {

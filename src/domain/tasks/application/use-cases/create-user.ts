@@ -5,7 +5,7 @@ import { User } from "../../enterprise/user";
 import { UserAlreadyExistsError } from "@/core/errors/user-already-exists-error";
 import { Either, left, right } from "@/core/either";
 
-export interface CreateUserRequest {
+export interface CreateUserUseCaseRequest {
   name: string;
   email: string;
   password: string;
@@ -21,7 +21,7 @@ export class CreateUserUseCase {
     name,
     email,
     password,
-  }: CreateUserRequest): Promise<CreateUserUseCaseResponse> {
+  }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithSameEmail) {

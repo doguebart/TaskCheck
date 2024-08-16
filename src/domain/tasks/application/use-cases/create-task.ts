@@ -4,13 +4,13 @@ import { Task } from "../../enterprise/tasks";
 import { UniqueEntityId } from "@/core/entity/unique-entity-id";
 import { Either, right } from "@/core/either";
 
-export interface CreateTaskRequest {
+export interface CreateTaskUseCaseRequest {
   userId: string;
   title: string;
   description: string;
 }
 
-type CreateTaskResponse = Either<null, { task: Task }>;
+type CreateTaskUseCaseResponse = Either<null, { task: Task }>;
 
 @Injectable()
 export class CreateTaskUseCase {
@@ -20,7 +20,7 @@ export class CreateTaskUseCase {
     userId,
     title,
     description,
-  }: CreateTaskRequest): Promise<CreateTaskResponse> {
+  }: CreateTaskUseCaseRequest): Promise<CreateTaskUseCaseResponse> {
     const task = Task.create({
       userId: new UniqueEntityId(userId),
       title,
