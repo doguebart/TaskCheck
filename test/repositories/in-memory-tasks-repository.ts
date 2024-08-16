@@ -4,7 +4,13 @@ import { Task } from "@/domain/tasks/enterprise/tasks";
 export class InMemoryTasksRepository implements TasksRepository {
   public items: Task[] = [];
 
-  async findById(taskId: string): Promise<Task | void> {
+  async delete(task: Task) {
+    const itemIndex = this.items.findIndex((item) => item.id === task.id);
+
+    this.items.splice(itemIndex, 1);
+  }
+
+  async findById(taskId: string) {
     const task = this.items.find((item) => item.id.toString() === taskId);
 
     if (!task) {
@@ -22,7 +28,7 @@ export class InMemoryTasksRepository implements TasksRepository {
     return tasks;
   }
 
-  async create(task: Task): Promise<void> {
+  async create(task: Task) {
     this.items.push(task);
   }
 }
