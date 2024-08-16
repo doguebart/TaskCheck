@@ -11,6 +11,10 @@ export interface TaskProps {
 }
 
 export class Task extends Entity<TaskProps> {
+  get userId() {
+    return this.props.userId;
+  }
+
   get title() {
     return this.props.title;
   }
